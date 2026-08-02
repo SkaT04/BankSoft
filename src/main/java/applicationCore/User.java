@@ -1,4 +1,4 @@
-package ApplicationCore;
+package applicationCore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class User {
         return login;
     }
 
-    public List<Long> getAccounts(){
+    public List<Long> getAccountsId(){
         return accounts;
     }
 

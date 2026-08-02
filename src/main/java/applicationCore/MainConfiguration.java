@@ -1,4 +1,4 @@
-package ApplicationCore;
+package applicationCore;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 public class MainConfiguration {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext("ApplicationCore");
+                new AnnotationConfigApplicationContext("applicationCore");
 
         context.close();
     }

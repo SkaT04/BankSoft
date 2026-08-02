@@ -1,30 +1,17 @@
-package ApplicationCore;
+package applicationCore;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-//@Component
 public class Account {
     private final Long id;
     private final Long userId;
-
-    @Value("${account.moneyAmount}")
     private Double moneyAmount;
 
     public Account(Long id,
-                   Long userId
+                   Long userId, Double moneyAmount
     ){
         this.id = id;
         this.userId = userId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public Long getId() {
-        return id;
+        this.moneyAmount = moneyAmount;
     }
 
     public Double getMoneyAmount() {

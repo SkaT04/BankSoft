@@ -1,6 +1,6 @@
-package ApplicationCore.Repository;
+package applicationCore.Repository;
 
-import ApplicationCore.User;
+import applicationCore.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
