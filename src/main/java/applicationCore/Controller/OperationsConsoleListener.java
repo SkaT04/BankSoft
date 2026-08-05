@@ -161,6 +161,7 @@ public class OperationsConsoleListener {
                         Double amount = Double.parseDouble(reader.readLine());
                         accountService.transferAccount(fromAccountId, toAccountId, amount);
                         System.out.println("\n---Successfully transfer---\n");
+                        break;
                     } catch (NumberFormatException e){
                         writer.write("Incorrect value");
                         break;
