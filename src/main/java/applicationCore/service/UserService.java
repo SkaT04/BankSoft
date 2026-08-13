@@ -1,8 +1,9 @@
-package applicationCore.Service;
+package applicationCore.service;
 
 import applicationCore.Account;
-import applicationCore.Repository.AccountRepository;
-import applicationCore.Repository.UserRepository;
+import applicationCore.aop.annotations.annotationLoggers.LoggerMark;
+import applicationCore.repository.AccountRepository;
+import applicationCore.repository.UserRepository;
 import applicationCore.User;
 import org.springframework.stereotype.Service;
 
@@ -26,18 +27,20 @@ public class UserService {
     }
 
 
+    @LoggerMark
     public void createUser(String login) throws NoSuchElementException, NullPointerException{
             if(login == null || login.isBlank()){
                 throw new NullPointerException("\n---Incorrect values---\n");
             }
             User newUser = new User(++userId, login);
             if(userRepository.getMapLoginUser().putIfAbsent(login, newUser) != null){
-                throw new NoSuchElementException("\n---Такой пользователь уже есть---\n");
+                throw new NoSuchElementException("\n---A user with that name already exists---\n");
             }
             userRepository.getMapIdUser().put(userId, newUser);
             accountService.createAccount(userId);
     }
 
+    @LoggerMark
     public void showAllUsers(){
         Map<Long, User> map = userRepository.getMapIdUser();
         for(User ref : map.values()){
@@ -45,6 +48,7 @@ public class UserService {
         }
     }
 
+    @LoggerMark
     public void removeUser(Long userId) throws NoSuchElementException, NullPointerException{
         if(userId == null){
             throw new NullPointerException("\n---Incorrect values---\n");
@@ -58,7 +62,8 @@ public class UserService {
         }
     }
 
-    public Long userLoginToUserId(String userLogin) throws NullPointerException{
+    @LoggerMark
+    private Long userLoginToUserId(String userLogin) throws NullPointerException{
         User user = userRepository.getMapLoginUser().get(userLogin);
         if(user == null) {
             throw new NullPointerException("\n---User not found---\n");
@@ -66,6 +71,7 @@ public class UserService {
         return user.getId();
     }
 
+    @LoggerMark
     public Long getUserId(String login) throws NoSuchElementException, NullPointerException{
         if(login == null || login.isBlank()){
             throw new NullPointerException("\n---Login is empty---\n");
@@ -77,6 +83,7 @@ public class UserService {
         return userId;
     }
 
+    @LoggerMark
     public String userAccounts(Long userId) throws NoSuchElementException, NullPointerException{
         if(userId == null){
             throw new NullPointerException("\n---Incorrect values---\n");

@@ -1,0 +1,35 @@
+<configuration>
+
+    <!-- 1. Настройка записи в файл с ротацией -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/app.log</file> <!-- Основной файл логов -->
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Шаблон для архивных файлов логов -->
+            <fileNamePattern>logs/archived/app-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- Максимальный размер одного файла -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- Сколько дней хранить архивы -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <!-- Профессиональный формат: Дата | Поток | Уровень | Имя класса | Сообщение -->
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 2. Вывод в основную консоль (опционально, если нужно дублировать) -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Корневой логер: пишет в файл всё уровня INFO и выше -->
+    <root level="INFO">
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

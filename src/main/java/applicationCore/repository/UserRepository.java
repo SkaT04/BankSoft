@@ -1,4 +1,4 @@
-package applicationCore.Repository;
+package applicationCore.repository;
 
 import applicationCore.User;
 import org.springframework.stereotype.Repository;

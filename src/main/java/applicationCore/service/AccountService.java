@@ -1,8 +1,9 @@
-package applicationCore.Service;
+package applicationCore.service;
 import applicationCore.Account;
 
-import applicationCore.Repository.AccountRepository;
-import applicationCore.Repository.UserRepository;
+import applicationCore.aop.annotations.annotationLoggers.LoggerMark;
+import applicationCore.repository.AccountRepository;
+import applicationCore.repository.UserRepository;
 import applicationCore.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
+    @LoggerMark
     public void createAccount(Long userId) throws NoSuchElementException, NullPointerException{
         if(userId == null){
             throw new NullPointerException("\n---Incorrect values---\n");
@@ -37,6 +39,7 @@ public class AccountService {
         user.getAccountsId().add(accountId);
     }
 
+    @LoggerMark
     public void closeAccount(Long userId, Long accountId) throws NoSuchElementException, NullPointerException {
         if (userId == null || accountId == null) {
             throw new NullPointerException("\n---Incorrect values---\n");
@@ -47,6 +50,7 @@ public class AccountService {
         }
     }
 
+    @LoggerMark
     public void depositAccount(Long accountId, Double amount) throws NoSuchElementException, NullPointerException {
         if(accountId == null || amount <= 0){
             throw new NullPointerException("\n---Incorrect values---\n");
@@ -58,6 +62,7 @@ public class AccountService {
         account.changeAmountBy(amount);
     }
 
+    @LoggerMark
     public void withdrawAccount(Long accountId, Double amount) throws NoSuchElementException, NullPointerException, InsufficientFundsException{
         if(accountId == null || amount <= 0){
             throw new NullPointerException("\n---Incorrect values---\n");
@@ -72,6 +77,7 @@ public class AccountService {
         account.changeAmountBy(-amount);
     }
 
+    @LoggerMark
     public void transferAccount(Long fromAccountId, Long toAccountId, Double amount) throws NoSuchElementException, NullPointerException, InsufficientFundsException {
         if (fromAccountId == null || toAccountId == null || amount == null || amount <= 0 || fromAccountId.equals(toAccountId)) {
             throw new NullPointerException("\n---Incorrect values---\n");
