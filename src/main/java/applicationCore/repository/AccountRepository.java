@@ -1,6 +1,6 @@
 package applicationCore.repository;
 
-import applicationCore.Account;
+import applicationCore.objects.Account;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

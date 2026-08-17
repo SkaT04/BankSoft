@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class HandlerLogger {
-    //"src", "main", "resources", "applicationCoreLogs", "serviceLogs", "serviceLogs.txt"
     private final Logger log = LoggerFactory.getLogger(HandlerLogger.class);
 
     @Around("@annotation(loggerMark)")

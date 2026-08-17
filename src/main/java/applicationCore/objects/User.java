@@ -1,9 +1,12 @@
-package applicationCore;
+package applicationCore.objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 
 public class User {
     private final Long  id;

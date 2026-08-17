@@ -1,0 +1,12 @@
+2026-08-13 23:49:23.425 [main] INFO  applicationCore.aop.HandlerLogger - Вызван метод: createUser
+2026-08-13 23:49:25.702 [main] INFO  applicationCore.aop.HandlerLogger - Вызван метод: createUser
+2026-08-13 23:49:25.704 [main] INFO  applicationCore.aop.HandlerLogger - Вызван метод: createAccount
+2026-08-13 23:49:25.705 [main] INFO  applicationCore.aop.HandlerLogger - Успешно завершает работу метод: createAccount. Время его работы: 1. 
+2026-08-13 23:49:25.705 [main] INFO  applicationCore.aop.HandlerLogger - Успешно завершает работу метод: createUser. Время его работы: 3. 
+2026-08-13 23:49:25.705 [main] INFO  applicationCore.aop.HandlerLogger - Успешно завершает работу метод: createUser. Время его работы: 2278. 
+2026-08-13 23:49:31.873 [main] INFO  applicationCore.aop.HandlerLogger - Вызван метод: closeAndOpenConsoleLog
+2026-08-13 23:49:31.901 [main] INFO  a.service.LogConsoleManager - Консоль логов успешно запущена в отдельном окне.
+2026-08-13 23:49:31.902 [main] INFO  applicationCore.aop.HandlerLogger - Успешно завершает работу метод: closeAndOpenConsoleLog. Время его работы: 29. 
+2026-08-13 23:52:49.389 [main] INFO  applicationCore.aop.HandlerLogger - Вызван метод: closeAndOpenConsoleLog
+2026-08-13 23:52:49.475 [main] INFO  a.service.LogConsoleManager - Консоль логов закрыта.
+2026-08-13 23:52:49.476 [main] INFO  applicationCore.aop.HandlerLogger - Успешно завершает работу метод: closeAndOpenConsoleLog. Время его работы: 86. 

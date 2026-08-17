@@ -1,4 +1,4 @@
-package applicationCore;
+package applicationCore.objects;
 
 
 public class Account {

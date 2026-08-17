@@ -1,10 +1,10 @@
 package applicationCore.service;
 
-import applicationCore.Account;
+import applicationCore.objects.Account;
 import applicationCore.aop.annotations.annotationLoggers.LoggerMark;
 import applicationCore.repository.AccountRepository;
 import applicationCore.repository.UserRepository;
-import applicationCore.User;
+import applicationCore.objects.User;
 import org.springframework.stereotype.Service;
 
 
