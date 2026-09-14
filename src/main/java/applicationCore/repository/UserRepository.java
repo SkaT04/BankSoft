@@ -19,10 +19,10 @@ public class UserRepository {
     }
 
     @LoggerMark
-    public void saveUser(UserEntity user) throws PersistenceException{
+    public void createUser(UserEntity userEntity) throws PersistenceException{
         try(Session session = sessionFactory.openSession();){
             session.beginTransaction();
-            session.persist(user);
+            session.persist(userEntity);
             session.getTransaction().commit();
 
         } catch (PersistenceException e){
@@ -49,7 +49,7 @@ public class UserRepository {
     public Long getUserID(String login){
         try(Session session = sessionFactory.openSession()){
             UserEntity user =
-                    (UserEntity) session.createQuery("select u from UserEntity u where u.login = :login", UserEntity.class).setParameter(1, login);
+                    session.createQuery("select u from UserEntity u where u.login = :login", UserEntity.class).setParameter("login", login).list().getFirst();
             if(user == null) {
                 throw new IllegalArgumentException("Пользователь не найден");
             }

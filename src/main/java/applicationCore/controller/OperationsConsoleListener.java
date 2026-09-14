@@ -169,13 +169,13 @@ public class OperationsConsoleListener {
     @HandleExceptions
     public void accountClose() throws Exception{
         Long userId = userService.getUserId(inputLogin());
-        String accounts = userService.userAccounts(userId);
+        String accounts = accountService.userAccounts(userId);
         writer.write(accounts.isEmpty() ? "\n---No accounts---\n" : accounts);
         writer.write("\nEnter ID: ");
         writer.flush();
         String accountIdString = reader.readLine();
         Long accountId = Long.parseLong(accountIdString);
-        accountService.closeAccount(userId, accountId);
+        accountService.closeAccount(accountId);
         System.out.println("\n---Successfully account closed---\n");
     }
 
@@ -191,7 +191,7 @@ public class OperationsConsoleListener {
     @HandleExceptions
     public void accountDeposit() throws Exception{
         Long userId = userService.getUserId(inputLogin());
-        writer.write(userService.userAccounts(userId));
+        writer.write(accountService.userAccounts(userId));
         writer.write("\nInput number account: ");
         writer.flush();
         Long accountId = Long.parseLong(reader.readLine());
@@ -206,7 +206,7 @@ public class OperationsConsoleListener {
     @HandleExceptions
     public void accountWithdraw() throws Exception{
         Long userId = userService.getUserId(inputLogin());
-        writer.write(userService.userAccounts(userId));
+        writer.write(accountService.userAccounts(userId));
         writer.write("\nInput number account: ");
         writer.flush();
         Long accountId = Long.parseLong(reader.readLine());
@@ -221,12 +221,12 @@ public class OperationsConsoleListener {
     @HandleExceptions
     public void accountTransfer() throws Exception{
         Long fromUserId = userService.getUserId(inputLogin());
-        writer.write(userService.userAccounts(fromUserId));
+        writer.write(accountService.userAccounts(fromUserId));
         writer.write("\nInput number fromAccount: ");
         writer.flush();
         Long fromAccountId = Long.parseLong(reader.readLine());
         Long toUserId = userService.getUserId(inputLogin());
-        writer.write(userService.userAccounts(toUserId));
+        writer.write(accountService.userAccounts(toUserId));
         writer.write("\nInput number toAccount: ");
         writer.flush();
         Long toAccountId = Long.parseLong(reader.readLine());

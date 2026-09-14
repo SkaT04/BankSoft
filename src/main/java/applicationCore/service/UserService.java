@@ -1,6 +1,5 @@
 package applicationCore.service;
 
-import applicationCore.objects.Account;
 import applicationCore.aop.annotations.annotationLoggers.LoggerMark;
 import applicationCore.objects.UserEntity;
 import applicationCore.repository.AccountRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -35,8 +33,7 @@ public class UserService {
             if(login == null || login.isBlank()){
                 throw new NullPointerException("\n---Incorrect values---\n");
             }
-            User newUser = new User(++userId, login);
-            userRepository.saveUser(userToUserEntity(newUser));
+            userRepository.createUser(new UserEntity(login));
             accountService.createAccount(userId);
     }
 
@@ -67,23 +64,6 @@ public class UserService {
             throw new NoSuchElementException("\n---User not found---\n");
         }
         return userId;
-    }
-
-    @LoggerMark
-    public String userAccounts(Long userId) throws NoSuchElementException, NullPointerException{
-        if(userId == null){
-            throw new NullPointerException("\n---Incorrect values---\n");
-        }
-        User user = userEntityToUser(userRepository.getUserById(userId));
-        if(user == null){
-            throw new NoSuchElementException("\n---User not found---\n");
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        for(Long accountId: user.getAccountsId()){
-            Account account = accountRepository.getMapIdAccount().get(accountId);
-            stringBuilder.append(account.toString()).append("\n");
-        }
-        return stringBuilder.toString();
     }
 
     public User userEntityToUser(UserEntity userEntity){

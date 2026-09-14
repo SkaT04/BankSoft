@@ -9,46 +9,35 @@ import applicationCore.objects.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import applicationCore.exceptions.InsufficientFundsException;
 
 @Service
 public class AccountService {
     private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
-    private long accountId;
     @Value("${account.moneyAmount}")
     private double initialStartAmount;
 
-    public AccountService(AccountRepository accountRepository, UserRepository userRepository){
+    public AccountService(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
-        accountId = 0;
-        this.userRepository = userRepository;
     }
 
     @LoggerMark
-    public void createAccount(Long userId) throws NoSuchElementException, NullPointerException{
+    public void createAccount(Long userId) throws NoSuchElementException, NullPointerException, IllegalArgumentException{
         if(userId == null){
             throw new NullPointerException("\n---Incorrect values---\n");
         }
-        User user = userRepository.getMapIdUser().get(userId);
-        if(user == null){
-            throw new NoSuchElementException("\n---User not found---\n");
-        }
-        Account newAccount = new Account(++accountId, userId, initialStartAmount);
-        accountRepository.getMapIdAccount().put(accountId, newAccount);
-        user.getAccountsId().add(accountId);
+        AccountEntity newAccount = new AccountEntity(userId, initialStartAmount);
+        accountRepository.createAccount(newAccount);
     }
 
     @LoggerMark
-    public void closeAccount(Long userId, Long accountId) throws NoSuchElementException, NullPointerException {
-        if (userId == null || accountId == null) {
+    public void closeAccount(Long accountId) throws NoSuchElementException, NullPointerException {
+        if (accountId == null) {
             throw new NullPointerException("\n---Incorrect values---\n");
         }
-        userRepository.getMapIdUser().get(userId).getAccountsId().remove(accountId);
-        if (accountRepository.getMapIdAccount().remove(accountId) == null) {
-            throw new NoSuchElementException("\n---Account not found---\n");
-        }
+        accountRepository.deleteById(accountId);
     }
 
     @LoggerMark
@@ -56,11 +45,13 @@ public class AccountService {
         if(accountId == null || amount <= 0){
             throw new NullPointerException("\n---Incorrect values---\n");
         }
-        Account account = accountRepository.getMapIdAccount().get(accountId);
-        if(account == null){
+        AccountEntity accountEntity = accountRepository.getById(accountId);
+        if(accountEntity == null){
             throw new NoSuchElementException("\n---Account not found---\n");
         }
+        Account account = toAccount(accountEntity);
         account.changeAmountBy(amount);
+        accountRepository.updateAccount(toAccountEntity(account));
     }
 
     @LoggerMark
@@ -68,14 +59,16 @@ public class AccountService {
         if(accountId == null || amount <= 0){
             throw new NullPointerException("\n---Incorrect values---\n");
         }
-        Account account = accountRepository.getMapIdAccount().get(accountId);
-        if(account == null){
+        AccountEntity accountEntity = accountRepository.getById(accountId);
+        if(accountEntity == null){
             throw new NoSuchElementException("\n---Account not found---\n");
         }
+        Account account = toAccount(accountEntity);
         if(amount > account.getMoneyAmount()){
             throw new InsufficientFundsException(account.getMoneyAmount(), amount);
         }
         account.changeAmountBy(-amount);
+        accountRepository.updateAccount(toAccountEntity(account));
     }
 
     @LoggerMark
@@ -85,6 +78,20 @@ public class AccountService {
         }
         withdrawAccount(fromAccountId, amount);
         depositAccount(toAccountId, amount);
+    }
+
+    @LoggerMark
+    public String userAccounts(Long userId) throws NoSuchElementException, NullPointerException{
+        if(userId == null){
+            throw new NullPointerException("\n---Incorrect values---\n");
+        }
+        List<AccountEntity> AccountEntityList = accountRepository.getAllAccounts(userId);
+        StringBuilder stringBuilder = new StringBuilder();
+        for(AccountEntity accountEntity: AccountEntityList){
+            Account account = toAccount(accountEntity);
+            stringBuilder.append(account.toString()).append("\n");
+        }
+        return stringBuilder.toString();
     }
 
     private AccountEntity toAccountEntity(Account account){

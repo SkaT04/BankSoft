@@ -11,12 +11,11 @@ import java.util.Objects;
 public class User {
     private final Long  id;
     private final String login;
-    private final List<Long> accounts;
+
 
     public User(Long id, String login){
         this.id = id;
         this.login = login;
-        accounts = new ArrayList<>();
     }
 
     public Long getId(){
@@ -27,9 +26,6 @@ public class User {
         return login;
     }
 
-    public List<Long> getAccountsId(){
-        return accounts;
-    }
 
     @Override
     public boolean equals(Object object){
@@ -50,7 +46,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", accounts=" + accounts +
+                ", accounts=" +
                 '}';
     }
 }

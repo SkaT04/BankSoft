@@ -20,6 +20,10 @@ public class UserEntity {
         this.login = login;
     }
 
+    public UserEntity(String login){
+        this.login = login;
+    }
+
     public Long getId(){
         return id;
     }
