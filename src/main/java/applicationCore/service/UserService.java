@@ -2,12 +2,15 @@ package applicationCore.service;
 
 import applicationCore.objects.Account;
 import applicationCore.aop.annotations.annotationLoggers.LoggerMark;
+import applicationCore.objects.UserEntity;
 import applicationCore.repository.AccountRepository;
 import applicationCore.repository.UserRepository;
 import applicationCore.objects.User;
+import jakarta.persistence.PersistenceException;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -28,23 +31,20 @@ public class UserService {
 
 
     @LoggerMark
-    public void createUser(String login) throws NoSuchElementException, NullPointerException{
+    public void createUser(String login) throws NoSuchElementException, NullPointerException, PersistenceException {
             if(login == null || login.isBlank()){
                 throw new NullPointerException("\n---Incorrect values---\n");
             }
             User newUser = new User(++userId, login);
-            if(userRepository.getMapLoginUser().putIfAbsent(login, newUser) != null){
-                throw new NoSuchElementException("\n---A user with that name already exists---\n");
-            }
-            userRepository.getMapIdUser().put(userId, newUser);
+            userRepository.saveUser(userToUserEntity(newUser));
             accountService.createAccount(userId);
     }
 
     @LoggerMark
     public void showAllUsers(){
-        Map<Long, User> map = userRepository.getMapIdUser();
-        for(User ref : map.values()){
-            System.out.println(ref.toString());
+        List<UserEntity> userEntityList = userRepository.getAllUser();
+        for(UserEntity ref : userEntityList){
+            System.out.println(userEntityToUser(ref).toString());
         }
     }
 
@@ -53,30 +53,16 @@ public class UserService {
         if(userId == null){
             throw new NullPointerException("\n---Incorrect values---\n");
         }
-        User user = userRepository.getMapIdUser().remove(userId);
-        if(user == null){
-            throw new NoSuchElementException("\n---User not found---\n");
-        }
-        for(Long accountId : user.getAccountsId()){
-            accountService.closeAccount(userId, accountId);
-        }
+        userRepository.deleteUserById(userId);
     }
 
-    @LoggerMark
-    private Long userLoginToUserId(String userLogin) throws NullPointerException{
-        User user = userRepository.getMapLoginUser().get(userLogin);
-        if(user == null) {
-            throw new NullPointerException("\n---User not found---\n");
-        }
-        return user.getId();
-    }
 
     @LoggerMark
     public Long getUserId(String login) throws NoSuchElementException, NullPointerException{
         if(login == null || login.isBlank()){
             throw new NullPointerException("\n---Login is empty---\n");
         }
-        Long userId = userLoginToUserId(login);
+        Long userId = userRepository.getUserID(login);
         if(userId == null){
             throw new NoSuchElementException("\n---User not found---\n");
         }
@@ -88,7 +74,7 @@ public class UserService {
         if(userId == null){
             throw new NullPointerException("\n---Incorrect values---\n");
         }
-        User user = userRepository.getMapIdUser().get(userId);
+        User user = userEntityToUser(userRepository.getUserById(userId));
         if(user == null){
             throw new NoSuchElementException("\n---User not found---\n");
         }
@@ -98,5 +84,19 @@ public class UserService {
             stringBuilder.append(account.toString()).append("\n");
         }
         return stringBuilder.toString();
+    }
+
+    public User userEntityToUser(UserEntity userEntity){
+        return new User(
+                userEntity.getId(),
+                userEntity.getLogin()
+        );
+    }
+
+    public UserEntity userToUserEntity(User user){
+        return new UserEntity(
+                user.getId(),
+                user.getLogin()
+        );
     }
 }

@@ -9,10 +9,15 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  id;
-    @Column(name = "loginUser")
+    @Column(name = "loginUser", unique = true)
     private String login;
 
     public UserEntity(){
+    }
+
+    public UserEntity(Long id, String login){
+        this.id = id;
+        this.login = login;
     }
 
     public Long getId(){

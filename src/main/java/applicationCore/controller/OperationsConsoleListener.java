@@ -57,7 +57,7 @@ public class OperationsConsoleListener {
                     -ACCOUNT_CLOSE
                     -USER_REMOVE
                     -EXIT
-                    \n
+                    
                     """);
             writer.write(">-");
             writer.flush();

@@ -18,6 +18,14 @@ public class Account {
         return moneyAmount;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public void changeAmountBy(Double amount){
         moneyAmount+=amount;
     }

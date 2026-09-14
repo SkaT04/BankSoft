@@ -2,6 +2,7 @@ package applicationCore.service;
 import applicationCore.objects.Account;
 
 import applicationCore.aop.annotations.annotationLoggers.LoggerMark;
+import applicationCore.objects.AccountEntity;
 import applicationCore.repository.AccountRepository;
 import applicationCore.repository.UserRepository;
 import applicationCore.objects.User;
@@ -84,5 +85,22 @@ public class AccountService {
         }
         withdrawAccount(fromAccountId, amount);
         depositAccount(toAccountId, amount);
+    }
+
+    private AccountEntity toAccountEntity(Account account){
+        return new AccountEntity(
+                account.getId(),
+                account.getUserId(),
+                account.getMoneyAmount()
+        );
+
+    }
+
+    private Account toAccount(AccountEntity accountEntity){
+        return new Account(
+                accountEntity.getId(),
+                accountEntity.getUserId(),
+                accountEntity.getMoneyAmount()
+        );
     }
 }
